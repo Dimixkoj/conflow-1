@@ -1,0 +1,39 @@
+name: Build Windows installers
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'desktop/**'
+      - 'renderer/**'
+      - 'package.json'
+      - '.github/workflows/windows-installers.yml'
+jobs:
+  conflow:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npm run dist:conflow
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ConFlow-1-Windows-Installer
+          path: release/*.exe
+  buildflow:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npm run dist:buildflow
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BuildFlow-1-Windows-Installer
+          path: release/*.exe
