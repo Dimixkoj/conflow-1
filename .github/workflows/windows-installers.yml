@@ -22,7 +22,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ConFlow-1-Windows-Installer
-          path: release/*.exe
+          path: release/conflow/*.exe
   buildflow:
     runs-on: windows-latest
     steps:
@@ -36,4 +36,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: BuildFlow-1-Windows-Installer
-          path: release/*.exe
+          path: release/buildflow/*.exe
