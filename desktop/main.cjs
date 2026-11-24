@@ -35,6 +35,7 @@ function openDatabase() {
       last_error TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_sync_queue_created ON sync_queue(created_at);
+    CREATE TABLE IF NOT EXISTS design_documents (id TEXT PRIMARY KEY, title TEXT NOT NULL, model_json TEXT NOT NULL, updated_at TEXT NOT NULL, sync_state TEXT NOT NULL DEFAULT 'pending', version INTEGER NOT NULL DEFAULT 1);
   `);
 }
 
@@ -89,6 +90,15 @@ ipcMain.handle('projects:save', (_event, input) => {
   });
   save();
   return record;
+});
+ipcMain.handle('design:load', () => db.prepare('SELECT * FROM design_documents ORDER BY updated_at DESC LIMIT 1').get() || null);
+ipcMain.handle('design:save', (_event, input) => {
+  const id = input.id || 'default-design'; const now = new Date().toISOString();
+  const record = { id, title: String(input.title || 'Untitled drawing'), model_json: JSON.stringify(input.model || {}), updated_at: now, sync_state: 'pending', version: Number(input.version || 0) + 1 };
+  const tx = db.transaction(() => {
+    db.prepare(`INSERT INTO design_documents (id,title,model_json,updated_at,sync_state,version) VALUES (@id,@title,@model_json,@updated_at,@sync_state,@version) ON CONFLICT(id) DO UPDATE SET title=excluded.title,model_json=excluded.model_json,updated_at=excluded.updated_at,sync_state='pending',version=excluded.version`).run(record);
+    enqueue('design_document', id, 'upsert', record);
+  }); tx(); return record;
 });
 ipcMain.handle('sync:status', () => ({
   queued: db.prepare('SELECT COUNT(*) AS count FROM sync_queue').get().count,
