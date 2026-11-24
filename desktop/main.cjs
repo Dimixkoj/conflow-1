@@ -4,7 +4,9 @@ const Database = require('better-sqlite3');
 
 let db;
 let mainWindow;
+let stopSync;
 const variant = process.env.APP_VARIANT === 'buildflow' ? 'buildflow' : 'conflow';
+const { startSync } = require('./sync.cjs');
 app.setName(variant === 'buildflow' ? 'BuildFlow 1' : 'ConFlow 1');
 
 function openDatabase() {
@@ -92,13 +94,14 @@ ipcMain.handle('sync:status', () => ({
   queued: db.prepare('SELECT COUNT(*) AS count FROM sync_queue').get().count,
   lastAttemptAt: null,
   mode: 'local-first',
-  note: 'Local changes are saved on this computer. Cloud sync activates when a sync service is configured.'
+  note: process.env.DIMIXKOJ_SYNC_URL ? 'Automatic sync is configured and will retry while online.' : 'Local changes are saved on this computer. Set DIMIXKOJ_SYNC_URL to enable cloud sync.'
 }));
 
 app.whenReady().then(() => {
   openDatabase();
+  stopSync = startSync(db);
   createWindow();
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-app.on('before-quit', () => { if (db) db.close(); });
+app.on('before-quit', () => { if (stopSync) stopSync(); if (db) db.close(); });
