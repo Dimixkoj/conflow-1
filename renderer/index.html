@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:">
+  <title>Dimixkoj Desktop</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">D</span><div><b id="product-name">ConFlow 1</b><small>DIMIXKOJ ENTERPRISES</small></div></div>
+    <nav>
+      <button class="nav active" data-view="home">Overview</button>
+      <button class="nav" data-view="projects">Projects</button>
+      <button class="nav" data-view="records">Local records</button>
+      <button class="nav" data-view="sync">Sync centre</button>
+      <button class="nav" data-view="settings">Settings</button>
+    </nav>
+    <div class="sidebar-foot"><span class="dot"></span> Offline-first workspace</div>
+  </aside>
+  <main>
+    <header><div><p class="eyebrow">DIMIXKOJ ENTERPRISES / DESKTOP</p><h1 id="page-title">Workspace overview</h1></div><div class="status-pill"><span class="dot"></span><span id="sync-label">Local storage ready</span></div></header>
+    <section id="home-view" class="view">
+      <div class="hero"><div><p class="eyebrow">YOUR WORK, EVEN WITHOUT INTERNET</p><h2 id="hero-title">Build with confidence.<br>Keep working offline.</h2><p>Projects and changes are saved on this computer first. Sync can resume when a supported server is connected.</p><button class="primary" id="new-project">Create project</button></div><div class="hero-orb">CF</div></div>
+      <div class="stats"><article><small>Saved projects</small><strong id="project-count">0</strong></article><article><small>Queued changes</small><strong id="queue-count">0</strong></article><article><small>Storage mode</small><strong>Local-first</strong></article></div>
+      <div class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="quiet" data-view="projects">View all</button></div><div id="recent-projects" class="empty">No projects saved yet. Create one to begin.</div></div>
+    </section>
+    <section id="projects-view" class="view hidden">
+      <div class="panel"><div class="panel-head"><h3>Projects</h3><button class="primary" id="new-project-2">New project</button></div><div id="project-list" class="empty">No projects yet.</div></div>
+    </section>
+    <section id="records-view" class="view hidden"><div class="panel"><h3>Local records</h3><p>Project records are stored in an encrypted-user-profile location managed by the desktop app. Database encryption and backup export are scheduled for the next implementation phase.</p></div></section>
+    <section id="sync-view" class="view hidden"><div class="panel"><h3>Synchronisation centre</h3><p id="sync-description">Local-first mode is active. Changes remain on this device until a secure sync endpoint is configured.</p><div class="sync-metrics"><div><small>Queued operations</small><strong id="sync-queued">0</strong></div><div><small>Sync policy</small><strong>Retry + preserve local version</strong></div></div></div></section>
+    <section id="settings-view" class="view hidden"><div class="panel"><h3>Application settings</h3><p>Product: <b id="settings-product">ConFlow 1</b></p><p>Version: <span id="app-version">0.1.0</span></p><p>Company: Dimixkoj Enterprises</p></div></section>
+  </main>
+  <dialog id="project-dialog"><form id="project-form"><div class="panel-head"><h3>Create project</h3><button type="button" class="quiet" id="close-dialog">Close</button></div><label for="project-title">Project title</label><input id="project-title" required maxlength="120" placeholder="Enter project name"><label for="project-description">Description</label><textarea id="project-description" rows="4" placeholder="Optional project details"></textarea><button class="primary" type="submit">Save on this computer</button></form></dialog>
+  <script src="./app.js"></script>
+</body>
+</html>
