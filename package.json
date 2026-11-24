@@ -2,7 +2,7 @@
   "name": "dimixkoj-construction-desktop",
   "version": "0.1.0",
   "private": true,
-  "description": "Offline-first ConFlow 1 and BuildFlow 1 Windows desktop installers",
+  "description": "Separate offline-first ConFlow 1 and BuildFlow 1 Windows desktop apps",
   "main": "desktop/main.cjs",
   "scripts": {
     "start": "electron .",
@@ -20,34 +20,5 @@
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8"
   },
-  "build": {
-    "appId": "com.dimixkoj.constructiondesktop",
-    "directories": {
-      "output": "release"
-    },
-    "files": [
-      "desktop/**/*",
-      "renderer/**/*",
-      "package.json"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
-    },
-    "extraMetadata": {
-      "main": "desktop/main.cjs"
-    }
-  }
+  "build": "electron-builder.config.cjs"
 }
