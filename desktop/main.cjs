@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, net } = require('electron');
 const path = require('node:path');
 const Database = require('better-sqlite3');
 
 let db;
 let mainWindow;
 const variant = process.env.APP_VARIANT === 'buildflow' ? 'buildflow' : 'conflow';
+app.setName(variant === 'buildflow' ? 'BuildFlow 1' : 'ConFlow 1');
 
 function openDatabase() {
   const file = path.join(app.getPath('userData'), 'dimixkoj-local.sqlite');
@@ -59,7 +60,7 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
 }
 
-ipcMain.handle('app:info', () => ({ variant, version: app.getVersion(), online: require('node:os').networkInterfaces() !== null }));
+ipcMain.handle('app:info', () => ({ variant, version: app.getVersion(), online: net.isOnline() }));
 ipcMain.handle('projects:list', () => db.prepare('SELECT * FROM projects ORDER BY updated_at DESC').all());
 ipcMain.handle('projects:save', (_event, input) => {
   if (!input || typeof input.title !== 'string' || !input.title.trim()) {
