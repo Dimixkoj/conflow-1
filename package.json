@@ -1,0 +1,53 @@
+{
+  "name": "dimixkoj-construction-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Offline-first ConFlow 1 and BuildFlow 1 Windows desktop installers",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "start:conflow": "cross-env APP_VARIANT=conflow electron .",
+    "start:buildflow": "cross-env APP_VARIANT=buildflow electron .",
+    "dist:conflow": "cross-env APP_VARIANT=conflow electron-builder --win nsis --x64",
+    "dist:buildflow": "cross-env APP_VARIANT=buildflow electron-builder --win nsis --x64",
+    "dist:both": "npm run dist:conflow && npm run dist:buildflow"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.dimixkoj.constructiondesktop",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "extraMetadata": {
+      "main": "desktop/main.cjs"
+    }
+  }
+}
