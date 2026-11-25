@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:">
-  <title>Dimixkoj Desktop</title>
+  <title>ConFlow 1 CAD & BIM</title>\n  <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -33,7 +33,7 @@
 
     <section id="cad-view" class="view hidden">
       <div class="cad-topbar"><div><p class="eyebrow">CONFLOW DESIGN STUDIO / BIM WORKSPACE</p><h2>Architectural model workspace</h2><small>One parametric model · coordinated drawings · IFC exchange</small></div><div class="cad-actions"><button class="quiet" id="ifc-import">Import IFC</button><input id="ifc-file" type="file" accept=".ifc" hidden><button class="quiet" id="ifc-export">Export IFC</button><button class="quiet" id="cad-save">Save model</button><button class="primary" id="cad-new">New model</button></div></div>
-      <div class="cad-commandbar"><span class="command-label">MODEL</span><button data-tool="select" class="tool active">Select</button><button data-tool="measure" class="tool">Measure</button><span id="active-tool-label">Selection</span><span class="toolbar-spacer"></span><span class="scale-label">Units: metres · Grid: 0.20 m</span></div>
+      <div class="cad-commandbar"><span class="command-label">MODEL</span><button data-tool="select" class="tool active">Select</button><button data-tool="measure" class="tool">Measure</button><button id="snap-toggle" class="tool active">Snap: ON</button><button id="undo" class="tool">Undo</button><button id="redo" class="tool">Redo</button><button id="trim" class="tool">Trim</button><button id="extend" class="tool">Extend</button><button id="offset" class="tool">Offset</button><button id="mirror" class="tool">Mirror</button><span id="active-tool-label">Selection</span><span class="toolbar-spacer"></span><label class="scale-label" for="section-position">Section X <input id="section-position" type="range" min="-10" max="10" step=".1" value="0"></label><span class="scale-label">Metric · 0.20 m grid</span></div>
       <div class="cad-layout">
         <aside class="cad-panel left-tools"><div class="panel-section-head"><b>TOOLBOX</b><small>Design & place</small></div>
           <button class="tool-group expanded" data-tool-group="architecture">⌄ Architecture</button><div id="group-architecture" class="tool-subtabs"><button data-tool="wall">Wall</button><button data-tool="door">Door</button><button data-tool="window">Window</button><button data-tool="stair">Staircase</button></div>
@@ -46,12 +46,12 @@
         <div class="cad-workarea"><div class="view-tabs"><button class="view-tab active" data-cad-view="plan">2D Plan</button><button class="view-tab" data-cad-view="3d">3D Model</button><button class="view-tab" data-cad-view="front">Front</button><button class="view-tab" data-cad-view="side">Side</button><button class="view-tab" data-cad-view="elevation">Elevation</button><button class="view-tab" data-cad-view="roofplan">Roof plan</button><button class="view-tab" data-cad-view="section">Section</button></div>
           <div class="drawing-board">
             <div class="view-sheet" data-sheet="plan"><svg id="cad-canvas" viewBox="0 0 900 570" role="img" aria-label="Coordinated 2D model plan"><defs><pattern id="minor-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#26364b" stroke-width=".7"/></pattern><pattern id="major-grid" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="url(#minor-grid)"/><path d="M100 0H0V100" fill="none" stroke="#38506a" stroke-width="1"/></pattern></defs><rect width="900" height="570" fill="#101a29"/><rect width="900" height="570" fill="url(#major-grid)"/><g id="cad-elements"></g><text x="24" y="548" fill="#7087a4" font-size="11">PLAN · METRIC MODEL SPACE</text></svg></div>
-            <div class="view-sheet hidden" data-sheet="3d"><div class="sheet-caption">3D MODEL / AXONOMETRIC VIEW</div><canvas class="model-view" data-model-view="3d"></canvas></div>
-            <div class="view-sheet hidden" data-sheet="front"><div class="sheet-caption">FRONT ORTHOGRAPHIC PROJECTION</div><canvas class="model-view" data-model-view="front"></canvas></div>
-            <div class="view-sheet hidden" data-sheet="side"><div class="sheet-caption">SIDE ORTHOGRAPHIC PROJECTION</div><canvas class="model-view" data-model-view="side"></canvas></div>
-            <div class="view-sheet hidden" data-sheet="elevation"><div class="sheet-caption">FRONT ELEVATION</div><canvas class="model-view" data-model-view="elevation"></canvas></div>
-            <div class="view-sheet hidden" data-sheet="roofplan"><div class="sheet-caption">ROOF PLAN</div><canvas class="model-view" data-model-view="roofplan"></canvas></div>
-            <div class="view-sheet hidden" data-sheet="section"><div class="sheet-caption">SECTION / CUT VIEW</div><canvas class="model-view" data-model-view="section"></canvas></div>
+            <div class="view-sheet hidden" data-sheet="3d"><div class="sheet-caption">3D MODEL / AXONOMETRIC VIEW · ORBIT / PAN / ZOOM</div><canvas id="cad-viewport" class="model-view"></canvas></div>
+            <div class="view-sheet hidden" data-sheet="front"><div class="sheet-caption">FRONT · ORTHOGRAPHIC PROJECTION FROM SHARED MODEL</div></div>
+            <div class="view-sheet hidden" data-sheet="side"><div class="sheet-caption">SIDE · ORTHOGRAPHIC PROJECTION FROM SHARED MODEL</div></div>
+            <div class="view-sheet hidden" data-sheet="elevation"><div class="sheet-caption">ELEVATION · ORTHOGRAPHIC PROJECTION FROM SHARED MODEL</div></div>
+            <div class="view-sheet hidden" data-sheet="roofplan"><div class="sheet-caption">ROOFPLAN · ORTHOGRAPHIC PROJECTION FROM SHARED MODEL</div></div>
+            <div class="view-sheet hidden" data-sheet="section"><div class="sheet-caption">SECTION · ORTHOGRAPHIC PROJECTION FROM SHARED MODEL</div></div>
           </div>
           <div class="cad-status"><span id="cad-status">Ready · Local parametric model</span><span>Objects <b id="cad-object-count">0</b> · Metric model space</span></div>
           <div class="cad-footer"><b>DIMIXKOJ ENTERPRISES</b><span>Project · Drawing · Scale · Drawn / checked by · Revision · Issue date</span><button class="quiet" id="cad-export">Export JSON</button></div>
@@ -64,6 +64,6 @@
     <section id="settings-view" class="view hidden"><div class="panel"><h3>Application settings</h3><p>Product: <b id="settings-product">ConFlow 1</b></p><p>Version: <span id="app-version">0.1.0</span></p><p>Company: Dimixkoj Enterprises</p></div></section>
   </main>
   <dialog id="project-dialog"><form id="project-form"><div class="panel-head"><h3>Create project</h3><button type="button" class="quiet" id="close-dialog">Close</button></div><label for="project-title">Project title</label><input id="project-title" required maxlength="120" placeholder="Enter project name"><label for="project-description">Description</label><textarea id="project-description" rows="4" placeholder="Optional project details"></textarea><button class="primary" type="submit">Save on this computer</button></form></dialog>
-  <script src="./app.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
