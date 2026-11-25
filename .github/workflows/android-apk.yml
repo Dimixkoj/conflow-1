@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'renderer/**'
+      - 'tests/**'
       - 'package.json'
       - 'package-lock.json'
       - 'capacitor.config.json'
