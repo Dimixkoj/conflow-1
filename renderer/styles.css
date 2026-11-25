@@ -34,3 +34,24 @@
 
 .calc-print-header{display:none}
 @media print{body.print-calculator #boq-view{display:none!important}body.print-calculator .calc-print-header{display:flex!important;flex-direction:column;gap:4px;border-bottom:2px solid #1c6570;padding-bottom:12px;margin-bottom:18px}body.print-calculator .calc-print-header b{font-size:18px;letter-spacing:1px}body.print-calculator .calc-print-header span{font-size:10px;letter-spacing:1px}body.print-calculator .calc-print-header small{font-size:9px;color:#506477!important}}
+
+
+/* Construction Measurement & Estimating Engine */
+.trade-heading th{background:#274c61!important;color:#f2f7fb!important;padding:12px 9px!important;font-size:11px!important;letter-spacing:.6px}
+.trade-total td{background:#eaf0f4;font-weight:800;color:#18384b!important;border-top:1px solid #9fb4c2}
+.dimension-row td{font-size:9px;color:#587083!important;background:#f0f4f7;padding:5px 9px 9px!important;line-height:1.5}
+.standard-note{margin:12px 0;padding:10px 12px;background:#eef3f5;border-left:3px solid #467c85;color:#425b6c;font-size:10px;line-height:1.6}
+.boq-collection-page{margin-top:24px;padding-top:18px;border-top:2px solid #315c6b;break-before:page;page-break-before:always}
+.boq-collection-page h3,.boq-grand-summary h3{font-size:16px;color:#1b4356}
+.boq-collection{display:grid;grid-template-columns:1fr;gap:0}
+.collection-row{display:flex;justify-content:space-between;gap:16px;padding:9px 10px;border-bottom:1px solid #d8e1e8;color:#263b4f;font-size:11px}
+.collection-row b{white-space:nowrap}
+.boq-grand-summary{margin-top:22px;padding:14px 18px;border:1px solid #aabdc9;background:#f0f5f7;break-inside:avoid;page-break-inside:avoid;color:#213d50}
+.boq-grand-summary p{display:flex;justify-content:space-between;border-bottom:1px solid #d5e0e6;padding:7px 0;font-size:11px}
+.boq-table td details{min-width:125px;font-size:9px;color:#435b6e}
+.boq-table td details summary{cursor:pointer;font-weight:700;padding:5px 0}
+.rate-field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0;white-space:nowrap}
+.boq-table td .rate-field input{width:75px;min-width:75px}
+.boq-table td select{display:block;max-width:145px;width:100%;margin:3px 0;background:#fff;color:#263b4f;border:1px solid #ccd7df;border-radius:4px;padding:5px;font-size:9px}
+.boq-table td:nth-child(2) input{display:block;margin:3px 0}
+@media print{.boq-collection-page{break-before:page;page-break-before:always}.boq-grand-summary{break-inside:avoid}.boq-table td details{display:none}.boq-table td select{display:none}.dimension-row{break-inside:avoid}.standard-note{background:#fff!important;color:#333;border-color:#555}}
