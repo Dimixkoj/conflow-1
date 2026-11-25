@@ -51,3 +51,31 @@ The 3D textures and component details improve presentation, but they do not make
 ## Build and test
 
 The Android debug APK and Windows installers are built by GitHub Actions. A successful workflow run and uploaded artifact are required before describing an installer or APK as ready for download.
+
+
+## Expanded architectural materials, geometry and measurement rules
+
+The structural toolbox now includes a parametric pad footing. The material selector has been expanded with concrete, blockwork, timber species/finishes, glass, steel, aluminium, stainless steel, ceramic tile, porcelain, marble, granite, brick, plaster, paint, gypsum board, carpet, asphalt, sand, soil, waterproofing and insulation. Procedural material textures use deterministic seeds so the same finish does not randomly change every time the model is rebuilt.
+
+Architectural geometry has been refined with a framed and panelled door leaf, hardware detail, stair handrails and starter pad-footing/blinding geometry. These are presentation-level starter components; they are not fabrication or structural shop drawings.
+
+### Expanded model-linked measurement rules
+
+| Model object | Generated BOQ lines |
+|---|---|
+| Wall | Net blockwork area, nominal block count, wall core volume, plaster to both faces, paint area to both faces |
+| Slab | Concrete, soffit formwork, floor finish area, assumed 50 mm screed, edge formwork |
+| Roof | Sloping roof covering and underlay areas based on pitch |
+| Column | Concrete and four-side formwork |
+| Beam | Concrete and soffit plus two-side formwork |
+| Pad footing | Concrete, excavation with stated working-space allowance, 50 mm blinding and side formwork |
+| Landscape | Surface area and assumed 150 mm topsoil |
+| Doors/windows/stairs/fixtures | Count-based measurement lines |
+
+The new measurement rules are isolated in `renderer/quantity-takeoff.mjs` and have unit tests in `tests/quantity-takeoff.test.mjs`. Run `npm test` to execute them. The Windows and Android build workflows now run this test suite before packaging.
+
+### Measurement assumptions and exclusions
+
+The 450 × 225 mm block face, 5% block allowance, 50 mm screed, 150 mm topsoil, 300 mm working space around pad footings, 150 mm excavation depth allowance and 50 mm blinding are explicit starter assumptions. Edit or remove generated lines to suit the specification and actual site conditions. The system does not yet calculate reinforcement schedules, bar bending schedules, detailed excavation support, stepped/combined/strip/raft foundations, wall junction deductions, complex roof coverings, measured openings deductions for all finish layers, stair concrete, labour outputs or complete NRM/SMM/standard method measurement rules. No structural member sizing or reinforcement design is implied.
+
+All quantities remain subject to review by the quantity surveyor/engineer and applicable Nigerian project specifications and standards before tender, payment or construction.
