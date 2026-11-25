@@ -35,11 +35,13 @@ function startSync(db) {
       const accepted = new Set(Array.isArray(result.accepted) ? result.accepted : []);
       const remove = db.prepare('DELETE FROM sync_queue WHERE id = ?');
       const mark = db.prepare("UPDATE projects SET sync_state='synced' WHERE id=?");
+      const markField = db.prepare("UPDATE field_records SET sync_state='synced' WHERE id=?");
       const tx = db.transaction(() => {
         for (const row of rows) {
           if (accepted.has('desktop-' + row.id)) {
             remove.run(row.id);
             if (row.entity_type === 'project') mark.run(row.entity_id);
+            if (['staff','site_report','team_message','whatsapp_review'].includes(row.entity_type)) markField.run(row.entity_id);
           }
         }
       });
