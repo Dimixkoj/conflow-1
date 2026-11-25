@@ -25,7 +25,7 @@ const TRADE_BY_MEASURE = {
   wall_plaster:'E', wall_paint:'E', slab_finish:'E', slab_screed:'E',
   electrical_count:'F', plumbing_count:'G', mechanical_count:'H',
   land_area:'J', land_topsoil:'J',
-  bed_count:'M', sofa_count:'M', table_count:'M', wardrobe_count:'M', cabinet_count:'M', furniture_count:'M', wall_volume:'C'
+  bed_count:'M', sofa_count:'M', table_count:'M', wardrobe_count:'M', cabinet_count:'M', furniture_count:'M', wall_volume:'C', stair_count:'C', door_count:'C', window_count:'C'
 };
 export function tradeForItem(item) {
   if (item.itemType === 'PC' || item.itemType === 'PS') return 'Z';
