@@ -175,3 +175,32 @@ The PNG export also offers 1×, 2× and 3× supersampled output (subject to devi
 ### Test coverage
 - `tests/project-architecture.test.mjs` tests approval invalidation, required approver metadata, frame node/member generation, missing analytical inputs, source-member validation and offline render job provenance.
 - Run `npm test` to execute all tests.
+
+
+## Workforce, site reporting and company communication
+
+### Staff and labourer profiles
+- Added a People & Site workspace with staff directory records: full name, company position, access-role label, employment type, phone, trade / skill and active status.
+- The selected staff profile is shown in the application header and linked to site reports and group messages.
+- Role labels include labourer, site supervisor, project manager, quantity surveyor, architect, engineer, staff and company admin.
+- Current implementation is a local staff register, not verified authentication or secure role-based authorisation. Production deployment must connect employee identity to sign-in, company-managed invitations, role-based access control and audit logs before confidential data is shared.
+
+### Site reports and field feedback
+- Site reports are linked to a project and registered staff member and capture work activity, location, percentage progress, site summary, issues, action required and attachments.
+- Attachments are stored with the local report record and enter the existing sync queue for the configured company endpoint.
+- Site feedback appears immediately in the local project feed. Cross-device live updates require a configured backend/realtime service and are not active by default.
+
+### Managed group chat
+- Added company general, site supervisors and project-specific team channels.
+- Messages are attributed to the selected staff profile, stored offline-first and queued through the existing company sync transport.
+- The present implementation is a local message queue; it is not yet a realtime multi-device chat server. Delivery, read receipts, moderation, retention and membership controls require a backend service.
+
+### WhatsApp work-record submission
+- Staff can manually choose a WhatsApp-exported text file, associate it with a project and staff profile, confirm permission to share, and submit it for company review.
+- Site report summaries can be opened in WhatsApp using a prefilled share link.
+- ConFlow does not scrape personal WhatsApp accounts, intercept private messages or read chat history in the background. Direct integration requires the official WhatsApp Business Platform / Cloud API, a verified business setup, approved permissions and webhook/backend configuration. Personal chats must remain staff-controlled and unrelated personal or sensitive content should be removed before submission.
+- Selected WhatsApp exports and site report records are queued for the configured company sync endpoint. No endpoint is configured by this milestone unless the company has separately supplied one.
+
+### Privacy and compliance controls
+- Staff must be informed about what work data is collected, why it is processed, who can review it and how long it is retained. Obtain appropriate consent / lawful basis and provide correction and access procedures under applicable Nigerian data-protection requirements.
+- Do not use this local role selector as proof of identity or authority. Secure login, server-side access checks, encryption, retention/deletion controls and company audit trails remain mandatory production work.
