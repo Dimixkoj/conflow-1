@@ -150,3 +150,28 @@ The PNG export also offers 1×, 2× and 3× supersampled output (subject to devi
 ### Automated checks
 - `tests/structural-analysis-bridge.test.mjs` covers exchange package creation, metadata/result validation, unknown member rejection and invalid status rejection.
 - Run all tests with `npm test`.
+
+
+## Controlled project model, analytical idealisation and offline-render adapter
+
+### One controlled project model
+- Added `renderer/project-governance.mjs` with a shared project schema, revision chain and independent workflow approvals for technical CAD, Presentation Studio, quantity surveying / BOQ and structural engineering.
+- Approvals record approver, role, timestamp, notes and the exact model revision. A subsequent model edit increments the revision and marks prior approvals stale.
+- This is an in-app workflow record, not a cryptographic signature, identity-provider verification or statutory professional certification. Access control and server-side immutable audit storage are future work.
+
+### Structural analytical idealisation
+- Added `renderer/analytical-model.mjs`. CAD beams and columns are idealised as frame members with centre-line end nodes; nearby coordinates are merged using a configurable geometric tolerance.
+- Slabs and walls are represented as shell regions; foundations are represented as foundation regions. These are not yet meshed finite elements.
+- The analytical package records source CAD IDs, dimensions, material placeholders, member connectivity, units, restraints, load cases, combinations and explicit missing-input warnings.
+- The current builder does not infer supports, soil springs, diaphragm constraints, releases, effective lengths, reinforcement, load magnitudes, code factors or design combinations. Load case and combination labels entered in the interface are identifiers/descriptions only; they do not contain calculated load patterns or factors.
+- A geometry/connectivity validation pass checks source references, frame-node links, unassigned restraints, material grades and missing load case / combination entries.
+- The existing external solver result importer remains an exchange validator. ConFlow does **not** execute a finite-element solver or independently calculate member forces, utilisation, deflection, stability, reinforcement or foundation capacity in this milestone. A solver adapter and licensed structural engineer must validate analytical idealisation, meshing, loads, code settings and signed results before design use.
+
+### Offline renderer adapter
+- Added `renderer/offline-render-adapter.mjs` to export a renderer-neutral job manifest containing the controlled project ID and revision, CAD scene, embedded material maps, camera and environment settings.
+- External render results can be matched to the original job and project revision using a provenance schema.
+- This separates the offline-render backend contract from the current WebGL real-time viewport. No offline path tracer, denoiser or external renderer binary is bundled or executed by this milestone.
+
+### Test coverage
+- `tests/project-architecture.test.mjs` tests approval invalidation, required approver metadata, frame node/member generation, missing analytical inputs, source-member validation and offline render job provenance.
+- Run `npm test` to execute all tests.
