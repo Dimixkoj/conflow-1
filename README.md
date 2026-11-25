@@ -15,7 +15,7 @@ This repository contains a shared Electron desktop shell that produces **two sep
 
 ## Important implementation status
 
-This is the first desktop foundation, not a completed production release. A background sync worker now retries queued batches while online when a real sync endpoint is configured. Cloud sync is not active until the owner supplies and validates that endpoint and its response contract. Payment processing, licence issuance, encrypted database storage, backups, the full CAD/3D/BOQ modules, and production signing are not yet implemented.
+This is the first desktop foundation, not a completed production release. A background sync worker now retries queued batches while online when a real sync endpoint is configured. The shared Dimixkoj Enterprise Supabase client is now wired for email authentication and app-scoped project upload. Other workforce records and conflict-aware bidirectional sync remain staged for subsequent milestones. Payment processing, licence issuance, encrypted database storage, backups, the full CAD/3D/BOQ modules, and production signing are not yet implemented.
 
 ## Build locally
 
@@ -43,3 +43,8 @@ SQLite is the source of truth while offline. Mutations are stored in `sync_queue
 4. Bring the existing ConFlow feature modules into the desktop shell.
 5. Implement BuildFlow owner/buyer licence flows and central licence register.
 6. Add legal acceptance records, payment provider integrations, installer signing and release QA.
+
+
+## Shared workforce backend
+
+Both app builds use the Dimixkoj Enterprise Supabase project with distinct `app_key` values (`conflow1` and `buildflow1`). The renderer uses only the public publishable key; authorization is enforced by Supabase Auth and RLS. Sign in with the registered company owner or an active app member, then use **Sync projects** to upload local project headers to the correct app workspace. This first client integration does not yet sync CAD models, BOQ lines, staff profiles, attendance, chat, attachments, or offline conflict resolution.
