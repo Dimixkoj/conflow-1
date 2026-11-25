@@ -3,7 +3,8 @@ export const FIELD_RECORD_TYPES=['staff','site_report','team_message','whatsapp_
 export function validateStaff(input){
  const name=String(input?.name||'').trim(),position=String(input?.position||'').trim(),role=String(input?.role||'').trim();
  if(!name||!position||!role)throw new Error('Staff name, company position and access role are required');
- return {...input,name,position,role,phone:String(input.phone||'').trim(),employmentType:input.employmentType||'Staff',active:input.active!==false,updatedAt:new Date().toISOString()};
+ if(input.privacyAcknowledged!==true)throw new Error('Acknowledge the staff-data notice before saving this profile');
+ return {...input,name,position,role,privacyAcknowledged:true,privacyAcknowledgedAt:new Date().toISOString(),phone:String(input.phone||'').trim(),employmentType:input.employmentType||'Staff',active:input.active!==false,updatedAt:new Date().toISOString()};
 }
 export function validateSiteReport(input){
  if(!String(input?.projectId||'').trim())throw new Error('Select a project for this site report');
