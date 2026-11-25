@@ -19,3 +19,5 @@
 @media(max-width:780px){.cad-commandbar{gap:5px}.cad-commandbar .tool{font-size:9px;padding:6px}.drawing-board{height:55vh;min-height:380px}#cad-viewport{min-height:380px}.left-tools{grid-template-columns:1fr 1fr}.cad-layout{gap:8px}}
 
 @media(max-width:760px){.cad-panel{display:block}.left-tools,.right-tools{max-height:none;overflow:visible}.right-tools{display:grid;grid-template-columns:1fr}.cad-layout{grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:780px){body{display:block}.sidebar{width:100%;height:auto;min-height:0;position:relative;padding:10px 12px;display:flex;flex-direction:column;gap:10px}.brand{margin:0}.sidebar nav{display:flex;overflow-x:auto;gap:4px;width:100%;padding-bottom:3px}.nav{padding:9px 10px;white-space:nowrap;font-size:11px}.sidebar-foot{display:none}main{padding:12px;max-width:none;width:auto}header{margin-bottom:14px}.hero{padding:20px;min-height:180px}.hero h2{font-size:25px}.hero-orb{width:72px;height:72px;font-size:22px}.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.stats article{padding:12px}.stats strong{font-size:17px}}
