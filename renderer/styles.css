@@ -81,3 +81,12 @@
 @media(max-width:700px){.studio-canvas{min-height:340px;height:52vh}.studio-adjust label{min-width:100%}.studio-toolbar label{min-width:100%}}
 
 .studio-actions .export-scale{display:flex;align-items:center;gap:6px;color:#b9c9da;font-size:10px}.studio-actions .export-scale select{background:#0d1827;color:#edf3ff;border:1px solid #3d566e;border-radius:7px;padding:8px}
+
+.workflow-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0 16px}
+.workflow-buttons button{font-size:11px;padding:9px 7px}
+#workflow-status .life-row,#analysis-model-summary .life-row{border-left:2px solid #527b9f;padding:8px 10px;margin:6px 0;background:rgba(75,111,145,.09);border-radius:5px}
+#workflow-status .life-row b,#analysis-model-summary .life-row b{display:block;font-size:11px}
+#workflow-status .life-row small,#analysis-model-summary small{display:block;color:#9eb2c8;font-size:10px;line-height:1.45;margin-top:3px}
+#analysis-model-summary p{font-weight:650;color:#dce8f5}
+.studio-side textarea{width:100%;min-height:62px;background:#0d1827;color:#edf3ff;border:1px solid #3d566e;border-radius:7px;padding:8px;font:inherit;font-size:11px}
+@media(max-width:760px){.workflow-buttons{grid-template-columns:1fr}}
