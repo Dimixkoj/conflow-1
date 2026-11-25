@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:">
-  <title>ConFlow 1 CAD & BIM</title>
+  <title>ConFlow 1 | Dimixkoj Enterprises</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -15,6 +15,8 @@
       <button class="nav active" data-view="home">Overview</button>
       <button class="nav" data-view="projects">Projects</button>
       <button class="nav" data-view="cad">CAD & 3D Studio</button>
+      <button class="nav" data-view="boq">BOQ & Costing</button>
+      <button class="nav" data-view="calculator">Calculators</button>
       <button class="nav" data-view="records">Local records</button>
       <button class="nav" data-view="sync">Sync centre</button>
       <button class="nav" data-view="settings">Settings</button>
@@ -24,7 +26,7 @@
   <main>
     <header><div><p class="eyebrow">DIMIXKOJ ENTERPRISES / DESKTOP</p><h1 id="page-title">Workspace overview</h1></div><div class="status-pill"><span class="dot"></span><span id="sync-label">Local storage ready</span></div></header>
     <section id="home-view" class="view">
-      <div class="hero"><div><p class="eyebrow">YOUR WORK, EVEN WITHOUT INTERNET</p><h2 id="hero-title">Build with confidence.<br>Keep working offline.</h2><p>Projects and changes are saved on this computer first. Sync can resume when a supported server is connected.</p><button class="primary" id="new-project">Create project</button></div><div class="hero-orb">CF</div></div>
+      <div class="hero cover-hero"><div class="cover-copy"><p class="eyebrow">DIMIXKOJ ENTERPRISES · PROFESSIONAL CONSTRUCTION WORKSPACE</p><div class="cover-kicker">DESIGN · MEASURE · ESTIMATE · DELIVER</div><h2 id="hero-title">ConFlow 1</h2><p class="cover-subtitle">Architectural CAD, 3D visualisation, bills of quantities and project cost control — connected in one practical workspace.</p><div class="cover-actions"><button class="primary" id="new-project">Create a project</button><button class="secondary" data-view="cad">Open design studio</button></div><div class="cover-meta"><span>METRIC-FIRST</span><span>OFFLINE-READY</span><span>MODEL-LINKED BOQ</span></div></div><div class="cover-art" aria-hidden="true"><div class="cover-ring ring-one"></div><div class="cover-ring ring-two"></div><div class="cover-cube"><span></span><i></i><b></b></div><div class="cover-caption">CONFLOW / 01</div></div></div>
       <div class="stats"><article><small>Saved projects</small><strong id="project-count">0</strong></article><article><small>Queued changes</small><strong id="queue-count">0</strong></article><article><small>Storage mode</small><strong>Local-first</strong></article></div>
       <div class="panel"><div class="panel-head"><h3>Recent projects</h3><button class="quiet" data-view="projects">View all</button></div><div id="recent-projects" class="empty">No projects saved yet. Create one to begin.</div></div>
     </section>
@@ -59,6 +61,26 @@
         </div>
         <aside class="cad-panel right-tools"><div class="panel-section-head"><b>MODEL INSPECTOR</b><small>Properties</small></div><div id="selected-properties"><p class="muted">Select an object to inspect its parameters.</p></div><div class="inspector-divider"></div><div class="panel-section-head"><b>MODEL TREE</b><small id="model-count">0 objects</small></div><div id="object-tree" class="object-tree"><p class="muted">No model objects.</p></div><div class="inspector-divider"></div><div class="panel-section-head"><b>QUANTITY TAKE-OFF</b></div><div id="cad-boq" class="quantity-list"><div>Walls <b>0</b></div></div><small class="muted">Preliminary counts only; verify construction specifications before pricing.</small></aside>
       </div>
+    </section>
+    <section id="boq-view" class="view hidden">
+      <div class="module-heading"><div><p class="eyebrow">MODEL-LINKED QUANTITY & COST CONTROL</p><h2>Bill of Quantities</h2><p>CAD-derived quantities stay linked to their source objects. Review, edit rates and descriptions, then prepare a clean print copy.</p></div><div class="module-actions"><button class="quiet" id="boq-refresh">Refresh from CAD</button><button class="quiet" id="boq-add">Add item</button><button class="secondary" id="boq-save">Save BOQ</button><button class="primary" id="boq-print">Print / PDF</button></div></div>
+      <div class="boq-sheet panel"><div class="boq-letterhead"><div class="boq-logo">D</div><div><b>DIMIXKOJ ENTERPRISES</b><small>CONSTRUCTION DESIGN · ESTIMATING · PROJECT MANAGEMENT</small></div><div class="boq-doc-meta"><b>BOQ / COST PLAN</b><small id="boq-date"></small></div></div>
+        <div class="boq-project-fields"><label>Project title<input id="boq-project" value="Untitled project"></label><label>Client / Employer<input id="boq-client" placeholder="Enter client name"></label><label>Prepared by<input id="boq-prepared" value="Dimixkoj Enterprises"></label><label>Currency<select id="boq-currency"><option value="NGN">NGN — ₦</option><option value="USD">USD — $</option><option value="GBP">GBP — £</option></select></label></div>
+        <div class="table-scroll"><table class="boq-table"><thead><tr><th>Item</th><th>Description / CAD source</th><th>Unit</th><th>Quantity</th><th>Waste %</th><th>Rate</th><th>Amount</th><th class="no-print">Edit</th></tr></thead><tbody id="boq-rows"></tbody></table></div>
+        <div class="boq-totals"><div><span>Sub-total</span><b id="boq-subtotal">₦0.00</b></div><div><span>Contingency (%) <input id="boq-contingency" type="number" min="0" max="100" value="5"></span><b id="boq-contingency-value">₦0.00</b></div><div class="grand-total"><span>Project estimate total</span><b id="boq-total">₦0.00</b></div></div>
+        <div class="boq-notes"><label>Specification / pricing notes<textarea id="boq-notes" rows="3" placeholder="State material specifications, assumptions, exclusions and pricing basis."></textarea></label></div>
+        <div class="boq-signoff"><div>Prepared by: __________________________</div><div>Checked / approved: __________________________</div><div>Date: __________________</div></div>
+        <p class="boq-footnote">Quantities generated from the current ConFlow CAD model are preliminary take-offs. Confirm specifications, measurement rules, site conditions and applicable standards before issuing for tender or construction.</p>
+      </div>
+    </section>
+    <section id="calculator-view" class="view hidden">
+      <div class="module-heading"><div><p class="eyebrow">ENGINEERING & ESTIMATING TOOLS</p><h2>Construction calculators</h2><p>Enter dimensions in metres. Each result shows the formula and assumptions used.</p></div></div>
+      <div class="calculator-layout"><div class="panel calculator-form"><div class="calculator-top"><div class="calc-icon">∑</div><div><b>Measurement calculator</b><small>Area · Volume · Concrete · Blockwork</small></div></div>
+        <label for="calc-type">Calculation type</label><select id="calc-type"><option value="area">Rectangular area</option><option value="volume">Rectangular volume</option><option value="concrete">Concrete material estimate</option><option value="blocks">Blockwork quantity</option></select>
+        <div class="calc-input-grid"><label>Length (m)<input id="calc-length" type="number" min="0" step="0.01" value="5"></label><label>Width (m)<input id="calc-width" type="number" min="0" step="0.01" value="4"></label><label>Height / thickness (m)<input id="calc-height" type="number" min="0" step="0.01" value="0.15"></label></div>
+        <label for="calc-mix">Concrete mix ratio</label><select id="calc-mix"><option value="1:2:4">1 : 2 : 4 — nominal mix</option><option value="1:1.5:3">1 : 1.5 : 3 — nominal mix</option></select>
+        <button class="primary" id="calc-run">Calculate result</button>
+      </div><div class="panel calculator-output"><div class="output-head"><div><p class="eyebrow">CALCULATION OUTPUT</p><h3 id="calc-result-title">Rectangular area</h3></div><span class="output-status">READY</span></div><div class="result-main"><small>Calculated result</small><strong id="calc-result">20.00 m²</strong><span id="calc-formula">5.00 × 4.00</span></div><div id="calc-breakdown" class="calc-breakdown"><div><span>Formula</span><b>Length × Width</b></div><div><span>Dimensions</span><b>5.00 m × 4.00 m</b></div></div><p class="calc-disclaimer">Calculator outputs are estimates based on entered dimensions and stated assumptions. They are not structural design certification or a substitute for professional review.</p><button class="secondary" id="calc-print">Print calculation sheet</button></div></div>
     </section>
     <section id="records-view" class="view hidden"><div class="panel"><h3>Local records</h3><p>Project records are stored in an encrypted-user-profile location managed by the desktop app. Database encryption and backup export are scheduled for the next implementation phase.</p></div></section>
     <section id="sync-view" class="view hidden"><div class="panel"><h3>Synchronisation centre</h3><p id="sync-description">Local-first mode is active. Changes remain on this device until a secure sync endpoint is configured.</p><div class="sync-metrics"><div><small>Queued operations</small><strong id="sync-queued">0</strong></div><div><small>Sync policy</small><strong>Retry + preserve local version</strong></div></div></div></section>
