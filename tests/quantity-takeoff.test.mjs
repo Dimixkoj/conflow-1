@@ -46,5 +46,5 @@ test('pad footing takeoff exposes assumed excavation, blinding and formwork rule
 test('landscape includes area and topsoil allowance',()=>{
  const rows=quantityLinesFor({type:'landscape',length:4,width:3});
  assert.equal(line(rows,'land_area').qty,12);
- assert.equal(line(rows,'land_topsoil').qty,1.8);
+ assert.ok(Math.abs(line(rows,'land_topsoil').qty-1.8)<1e-9);
 });
