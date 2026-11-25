@@ -25,7 +25,7 @@ const TRADE_BY_MEASURE = {
   wall_plaster:'E', wall_paint:'E', slab_finish:'E', slab_screed:'E',
   electrical_count:'F', plumbing_count:'G', mechanical_count:'H',
   land_area:'J', land_topsoil:'J',
-  bed_count:'M', sofa_count:'M', table_count:'M', wardrobe_count:'M', cabinet_count:'M', furniture_count:'M'
+  bed_count:'M', sofa_count:'M', table_count:'M', wardrobe_count:'M', cabinet_count:'M', furniture_count:'M', wall_volume:'C'
 };
 export function tradeForItem(item) {
   if (item.itemType === 'PC' || item.itemType === 'PS') return 'Z';
@@ -52,7 +52,7 @@ export function itemAmount(item={}) {
   return Math.max(0,Number(item.quantity)||0)*unitRate;
 }
 export function tradeSummary(items=[]) {
-  return TRADES.map(t=>({...t,items:items.filter(i=>tradeForItem(i)===t.code),total:items.filter(i=>tradeForItem(i)===t.code).reduce((s,i)=>s+itemAmount(i),0)})).filter(t=>t.items.length);
+  return TRADES.map(t=>({...t,items:items.filter(i=>tradeForItem(i)===t.code),total:items.filter(i=>tradeForItem(i)===t.code).reduce((s,i)=>s+itemAmount(i),0)}));
 }
 export function dimensionSheet(item, element) {
   const e=element||{};
