@@ -31,7 +31,7 @@ export function validateAnalyticalModel(a,project){
  for(const m of a.members){if(!sourceIds.has(m.sourceElementId))issues.push(m.id+': source CAD object is missing');if(m.kind==='FRAME'&&(!nodeIds.has(m.nodeI)||!nodeIds.has(m.nodeJ)))issues.push(m.id+': invalid node connectivity');if(m.kind==='FRAME'&&m.nodeI===m.nodeJ)issues.push(m.id+': zero length');}
  if(!a.members.length)issues.push('No structural members found');
  if(a.nodes.some(n=>n.restraintStatus==='UNASSIGNED'))issues.push('One or more supports/restraints are unassigned');
- if(a.members.some(m=>!m.material.grade))issues.push('Material grades are not assigned');
+ if(a.members.some(m=>!m.material?.grade))issues.push('Material grades are not assigned');
  if(a.loadCases.length===0)issues.push('No load cases defined');
  if(a.combinations.length===0)issues.push('No design load combinations defined');
  return {valid:issues.length===0,issues,memberCount:a.members.length,nodeCount:a.nodes.length};
