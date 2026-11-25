@@ -36,6 +36,16 @@ function openDatabase() {
     );
     CREATE INDEX IF NOT EXISTS idx_sync_queue_created ON sync_queue(created_at);
     CREATE TABLE IF NOT EXISTS design_documents (id TEXT PRIMARY KEY, title TEXT NOT NULL, model_json TEXT NOT NULL, updated_at TEXT NOT NULL, sync_state TEXT NOT NULL DEFAULT 'pending', version INTEGER NOT NULL DEFAULT 1);
+    CREATE TABLE IF NOT EXISTS field_records (
+      id TEXT PRIMARY KEY,
+      entity_type TEXT NOT NULL,
+      project_id TEXT,
+      payload_json TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      sync_state TEXT NOT NULL DEFAULT 'pending'
+    );
+    CREATE INDEX IF NOT EXISTS idx_field_records_type ON field_records(entity_type, updated_at);
+
   `);
 }
 
@@ -99,6 +109,14 @@ ipcMain.handle('design:save', (_event, input) => {
     db.prepare(`INSERT INTO design_documents (id,title,model_json,updated_at,sync_state,version) VALUES (@id,@title,@model_json,@updated_at,@sync_state,@version) ON CONFLICT(id) DO UPDATE SET title=excluded.title,model_json=excluded.model_json,updated_at=excluded.updated_at,sync_state='pending',version=excluded.version`).run(record);
     enqueue('design_document', id, 'upsert', record);
   }); tx(); return record;
+});
+ipcMain.handle('records:list', (_event, entityType) => db.prepare('SELECT * FROM field_records WHERE entity_type=? ORDER BY updated_at DESC').all(String(entityType)).map(r=>({id:r.id,entityType:r.entity_type,projectId:r.project_id,payload:JSON.parse(r.payload_json),updatedAt:r.updated_at,syncState:r.sync_state})));
+ipcMain.handle('records:save', (_event, input) => {
+  if (!input || !/^[a-zA-Z][a-zA-Z0-9_-]{1,40}$/.test(String(input.entityType||''))) throw new Error('Invalid record type.');
+  const id=String(input.id||require('node:crypto').randomUUID()),now=new Date().toISOString(),payload=input.payload||{};
+  const record={id,entity_type:String(input.entityType),project_id:input.projectId||null,payload_json:JSON.stringify(payload),updated_at:now,sync_state:'pending'};
+  const tx=db.transaction(()=>{db.prepare(`INSERT INTO field_records(id,entity_type,project_id,payload_json,updated_at,sync_state) VALUES(@id,@entity_type,@project_id,@payload_json,@updated_at,@sync_state) ON CONFLICT(id) DO UPDATE SET entity_type=excluded.entity_type,project_id=excluded.project_id,payload_json=excluded.payload_json,updated_at=excluded.updated_at,sync_state='pending'`).run(record);enqueue(record.entity_type,record.id,'upsert',{...payload,id,projectId:record.project_id});});
+  tx();return {id,entityType:record.entity_type,projectId:record.project_id,payload,updatedAt:now,syncState:'pending'};
 });
 ipcMain.handle('sync:status', () => ({
   queued: db.prepare('SELECT COUNT(*) AS count FROM sync_queue').get().count,
