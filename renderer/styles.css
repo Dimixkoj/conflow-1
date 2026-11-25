@@ -55,3 +55,5 @@
 .boq-table td select{display:block;max-width:145px;width:100%;margin:3px 0;background:#fff;color:#263b4f;border:1px solid #ccd7df;border-radius:4px;padding:5px;font-size:9px}
 .boq-table td:nth-child(2) input{display:block;margin:3px 0}
 @media print{.boq-collection-page{break-before:page;page-break-before:always}.boq-grand-summary{break-inside:avoid}.boq-table td details{display:none}.boq-table td select{display:none}.dimension-row{break-inside:avoid}.standard-note{background:#fff!important;color:#333;border-color:#555}}
+
+@media print{.boq-table tbody .trade-heading{break-before:page;page-break-before:always}.boq-grand-summary{break-before:page;page-break-before:always}.boq-table tbody .trade-total{break-inside:avoid;page-break-inside:avoid}}
