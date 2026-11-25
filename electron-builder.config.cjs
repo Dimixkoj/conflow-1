@@ -5,7 +5,7 @@ module.exports = {
   appId: isBuildFlow ? 'com.dimixkoj.buildflow1' : 'com.dimixkoj.conflow1',
   productName: isBuildFlow ? 'BuildFlow 1' : 'ConFlow 1',
   directories: { output: isBuildFlow ? 'release/buildflow' : 'release/conflow' },
-  files: ['desktop/**/*', 'renderer/**/*', 'package.json'],
+  files: ['desktop/**/*', 'dist/**/*', 'package.json'],
   win: { target: [{ target: 'nsis', arch: ['x64'] }] },
   nsis: {
     oneClick: false,
