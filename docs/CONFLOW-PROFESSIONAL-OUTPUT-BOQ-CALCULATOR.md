@@ -96,3 +96,10 @@ Measured rate build-up now separates labour, materials, plant, overhead and prof
 Current model take-off remains a developing rules engine. It does not yet provide complete NRM2/POMI measurement clauses, a full dimension paper with squaring sheets, automatic drawing-sheet extraction, reinforcement tonnage/BBS, comprehensive services measurement, full excavation/earthworks, or every deduction and deemed-to-be-included rule. Market rates are not automatically verified against current Jos, Lagos or other Nigerian supplier/contractor quotations. No current market price is represented as authoritative. QS review, current quotations and project-specific specifications remain mandatory before issue for pricing.
 
 Tests: npm test now includes the original CAD take-off tests and the new trade classification, rate build-up, PC/PS and dimension-sheet tests.
+
+
+## 3D Presentation Studio — photorealistic presentation foundation
+
+The CAD viewport now has a presentation-mode switch that removes technical grid/axis overlays and uses a clean architectural backdrop, a generated studio environment map, physically based environment reflections, improved daylight/fill/rim lighting, ACES filmic tone mapping, soft shadows, and upgraded PBR material response for timber, masonry, stone, metals and glass. The presentation controls expose Draft/Balanced/High quality, Daylight/Golden Hour/Studio lighting, exposure adjustment and PNG capture of the current 3D viewport.
+
+This is a rendering-quality foundation, not a claim of V-Ray/Lumion/Enscape-equivalent photorealism. Current materials are procedural starter textures; high-resolution manufacturer textures, detailed normal/roughness maps, vegetation and entourage libraries, advanced global illumination, denoising, render queues and high-resolution offline rendering remain future work. Final image quality depends on model detail, device GPU and selected quality mode.
