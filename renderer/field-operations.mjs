@@ -3,7 +3,7 @@ export const FIELD_RECORD_TYPES=['staff','site_report','team_message','whatsapp_
 export function validateStaff(input){
  const name=String(input?.name||'').trim(),position=String(input?.position||'').trim(),role=String(input?.role||'').trim();
  if(!name||!position||!role)throw new Error('Staff name, company position and access role are required');
- if(input.privacyAcknowledged!==true)throw new Error('Acknowledge the staff-data notice before saving this profile');
+ if(input.privacyAcknowledged!==true)throw new Error('Please acknowledge the staff-data notice before saving this profile');
  return {...input,name,position,role,privacyAcknowledged:true,privacyAcknowledgedAt:new Date().toISOString(),phone:String(input.phone||'').trim(),employmentType:input.employmentType||'Staff',active:input.active!==false,updatedAt:new Date().toISOString()};
 }
 export function validateSiteReport(input){
@@ -15,7 +15,7 @@ export function validateSiteReport(input){
 export function parseWhatsAppExport(text){
  const raw=String(text||'');if(!raw.trim())throw new Error('The selected WhatsApp export is empty');
  if(raw.length>2_000_000)throw new Error('WhatsApp text export exceeds the 2 MB review limit');
- const lines=raw.split(/\r?\n/);
- return {text:raw,lineCount:lines.length,messageCount:lines.filter(x=>/^\[?\d{1,4}[/-]\d{1,2}[/-]\d{2,4}/.test(x)).length,preview:lines.slice(0,8).join('\n'),importedAt:new Date().toISOString(),source:'User-selected WhatsApp text export'};
+ const lines=raw.split(/\\r?\\n/);
+ return {text:raw,lineCount:lines.length,messageCount:lines.filter(x=>/^\\[?\\d{1,4}[/-]\\d{1,2}[/-]\\d{2,4}/.test(x)).length,preview:lines.slice(0,8).join('\\n'),importedAt:new Date().toISOString(),source:'User-selected WhatsApp text export'};
 }
 export function canSubmitWhatsAppReview({consent,staffId,projectId}){return consent===true&&!!String(staffId||'').trim()&&!!String(projectId||'').trim()}
