@@ -20,7 +20,8 @@
   "dependencies": {
     "better-sqlite3": "^11.7.0",
     "three": "^0.179.0",
-    "three-bvh-csg": "^0.0.18"
+    "three-bvh-csg": "^0.0.18",
+    "@supabase/supabase-js": "2.117.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
