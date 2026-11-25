@@ -122,3 +122,31 @@ The Presentation Studio includes a conceptual maintenance-screening panel for 10
 This feature is NOT finite-element analysis, structural load or pressure calculation, wind/rain load analysis, fatigue analysis, reinforcement/corrosion model, code check, remaining-life prediction, or a declaration that any element is strong, weak, safe or unsafe. Occupancy is a scenario input only; actual imposed loads must come from occupancy type, use class, code and engineer's design basis. The screening formula is heuristic and cannot predict structural performance or failure. Structural adequacy requires complete structural drawings, material strengths and tests, reinforcement details, geotechnical data, loads and combinations, exposure assumptions, inspection records and a validated analysis by a licensed structural engineer under applicable Nigerian standards. Do not use these screening outputs for design approval, occupancy approval, insurance, tender certification or construction decisions.
 
 The PNG export also offers 1×, 2× and 3× supersampled output (subject to device memory/GPU limits). This increases pixel dimensions from the viewport render; it is not a substitute for offline path tracing.
+
+
+## Professional presentation and analysis integration milestone
+
+### PBR material channels
+- Presentation Studio now accepts per-material **albedo/base colour, normal, roughness, metallic and displacement/height** texture channels.
+- Imported images are converted to WebP and capped at a 2048-pixel maximum edge before being embedded in the local project model.
+- Normal, roughness, metallic and displacement maps are treated as non-colour data; albedo maps use sRGB.
+- Material channels are loaded into Three.js physically based MeshStandardMaterial / MeshPhysicalMaterial properties.
+- Displacement is currently a basic shader/material channel and may have limited visible effect on low-subdivision architectural primitives. UV calibration, texture scale controls, tangent-space validation, high-density tessellation and a manufacturer-verified PBR catalogue remain future work.
+
+### Lighting, detailed assets and rendering
+- The renderer uses Three.js physically based materials, a PMREM RoomEnvironment image-based environment, directional sunlight, hemisphere fill, shadows and emissive point-light fixtures for interior lighting.
+- Added more detailed parametric bed, sofa, table, wardrobe and cabinet forms, plus a simple emissive light fixture object. These are starter asset families, not a full furniture/lighting manufacturer library.
+- The render queue stores named camera/view snapshots and exports them sequentially as PNG files at the selected supersampling scale.
+- **Important renderer boundary:** the queue is currently a WebGL real-time capture queue. It is not an offline path tracer, and no true path-tracing denoiser, multi-bounce global illumination, physically accurate caustics or V-Ray/Enscape/Lumion integration is included yet. Current contact shading is an adjustable lighting/shadow approximation, not a screen-space AO render pass. The app must not advertise this milestone as V-Ray-equivalent.
+- A future renderer adapter should support a native/offline path-tracing backend, progressive accumulation, denoising, render farm execution, render presets and export of camera/material/light packages without altering the technical CAD model.
+
+### Structural analysis integration boundary
+- Added `renderer/structural-analysis-bridge.mjs`, a solver-neutral exchange contract that exports analytical member geometry and an explicit list of solver-required inputs.
+- Added import validation for external member results with solver name/version, analysis date, units, design code, engineer metadata, CAD member IDs, status, utilisation and governing combination.
+- This is an **integration bridge only**. It does not calculate loads, load combinations, structural actions, member capacity, reinforcement, buckling, deflection, foundation bearing, fatigue or deterioration. It does not verify an external solver's mathematics or certify the engineer's model.
+- The exchange intentionally requires the external solver and licensed engineer to define connectivity, restraints, sections, materials, reinforcement, geotechnical parameters, actions and code-specific combinations. Applicable Nigerian Standards and the adopted code / National Annex must be confirmed for each project.
+- Imported PASS/FAIL/REVIEW values are displayed as solver-reported results and are not independently endorsed by ConFlow. Signed design checks and professional review remain mandatory.
+
+### Automated checks
+- `tests/structural-analysis-bridge.test.mjs` covers exchange package creation, metadata/result validation, unknown member rejection and invalid status rejection.
+- Run all tests with `npm test`.
