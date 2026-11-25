@@ -17,3 +17,5 @@
 .property-grid input{min-width:0}
 #selected-properties select{width:100%;background:#0e1928;color:#e8f0f8;border:1px solid #344a63;border-radius:5px;padding:8px;font-size:11px}
 @media(max-width:780px){.cad-commandbar{gap:5px}.cad-commandbar .tool{font-size:9px;padding:6px}.drawing-board{height:55vh;min-height:380px}#cad-viewport{min-height:380px}.left-tools{grid-template-columns:1fr 1fr}.cad-layout{gap:8px}}
+
+@media(max-width:760px){.cad-panel{display:block}.left-tools,.right-tools{max-height:none;overflow:visible}.right-tools{display:grid;grid-template-columns:1fr}.cad-layout{grid-template-columns:minmax(0,1fr)}}
