@@ -17,7 +17,7 @@
       <button class="nav" data-view="cad">Technical CAD</button><button class="nav" data-view="presentation">Presentation Studio</button>
       <button class="nav" data-view="boq">BOQ & Costing</button>
       <button class="nav" data-view="calculator">Calculators</button>
-      <button class="nav" data-view="records">Local records</button>
+      <button class="nav" data-view="field">People & Site</button><button class="nav" data-view="records">Local records</button>
       <button class="nav" data-view="sync">Sync centre</button>
       <button class="nav" data-view="settings">Settings</button>
     </nav>
@@ -100,6 +100,62 @@
         <label for="calc-mix">Concrete mix ratio</label><select id="calc-mix"><option value="1:2:4">1 : 2 : 4 — nominal mix</option><option value="1:1.5:3">1 : 1.5 : 3 — nominal mix</option></select>
         <button class="primary" id="calc-run">Calculate result</button>
       </div><div class="panel calculator-output"><div class="calc-print-header"><b>DIMIXKOJ ENTERPRISES</b><span>CONFLOW 1 · CONSTRUCTION CALCULATION SHEET</span><small id="calc-print-date"></small></div><div class="output-head"><div><p class="eyebrow">CALCULATION OUTPUT</p><h3 id="calc-result-title">Rectangular area</h3></div><span class="output-status">READY</span></div><div class="result-main"><small>Calculated result</small><strong id="calc-result">20.00 m²</strong><span id="calc-formula">5.00 × 4.00</span></div><div id="calc-breakdown" class="calc-breakdown"><div><span>Formula</span><b>Length × Width</b></div><div><span>Dimensions</span><b>5.00 m × 4.00 m</b></div></div><p class="calc-disclaimer">Calculator outputs are estimates based on entered dimensions and stated assumptions. They are not structural design certification or a substitute for professional review.</p><button class="secondary" id="calc-print">Print calculation sheet</button></div></div>
+    </section>
+    <section id="field-view" class="view hidden">
+      <div class="module-heading"><div><p class="eyebrow">DIMIXKOJ ENTERPRISES · WORKFORCE & SITE OPERATIONS</p><h2>People, site reports & team communication</h2><p>Register staff and labourers, receive project-linked field updates, coordinate team discussions and submit selected WhatsApp work records for company review.</p></div></div>
+      <div class="field-grid">
+        <article class="panel"><div class="panel-head"><h3>My staff profile / registration</h3><span class="status-pill">Local profile</span></div>
+          <form id="staff-form" class="field-form">
+            <label>Full name<input id="staff-name" required maxlength="100" placeholder="Employee / labourer full name"></label>
+            <label>Company position<input id="staff-position" required maxlength="100" placeholder="e.g. Site Supervisor, Mason, Electrician"></label>
+            <label>System access role<select id="staff-role"><option value="staff">Staff</option><option value="site_supervisor">Site Supervisor</option><option value="project_manager">Project Manager</option><option value="quantity_surveyor">Quantity Surveyor</option><option value="architect">Architect</option><option value="engineer">Engineer</option><option value="labourer">Labourer</option><option value="company_admin">Company Admin</option></select></label>
+            <label>Employment type<select id="staff-employment"><option>Staff</option><option>Contractor</option><option>Daily labourer</option><option>Subcontractor</option><option>Consultant</option></select></label>
+            <label>Phone number<input id="staff-phone" type="tel" placeholder="+234..."></label>
+            <label>Trade / skill<input id="staff-trade" placeholder="e.g. Block laying, carpentry, plumbing"></label>
+            <label class="check-line"><input id="staff-active" type="checkbox" checked> Active on company projects</label>
+            <button class="primary" type="submit">Save staff profile</button>
+          </form>
+          <p class="studio-note">This registers a workforce identity and job position. It is not a secure sign-in or verified identity system yet; production access control and employee verification must be connected before sensitive company records are exposed.</p>
+        </article>
+        <article class="panel"><div class="panel-head"><h3>Company workforce directory</h3><span id="staff-count" class="status-pill">0 people</span></div><div id="staff-directory" class="field-list empty">No staff registered yet.</div></article>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Site report & live field feedback</h3><small>Submit progress, delays, site conditions, photos and requests for company review</small></div><span class="status-pill">Project-linked</span></div>
+        <form id="site-report-form" class="field-form field-form-wide">
+          <label>Project<select id="report-project" required><option value="">Select project</option></select></label>
+          <label>Submitted by<select id="report-staff" required><option value="">Select registered staff</option></select></label>
+          <label>Site / location<input id="report-location" placeholder="Site address, block, floor or zone"></label>
+          <label>Work activity<input id="report-activity" required placeholder="e.g. Ground floor blockwork"></label>
+          <label>Progress completed (%)<input id="report-progress" type="number" min="0" max="100" value="0"></label>
+          <label>Site condition / feedback<textarea id="report-summary" rows="3" required placeholder="Describe work completed, labour strength, materials used and current conditions"></textarea></label>
+          <label>Challenges / safety observations<textarea id="report-issues" rows="2" placeholder="Delays, defects, safety observations or material shortages"></textarea></label>
+          <label>Action required<textarea id="report-action" rows="2" placeholder="What support or decision is required from management?"></textarea></label>
+          <label>Attach site photos / documents<input id="report-files" type="file" multiple accept="image/*,.pdf,.doc,.docx"></label>
+          <button class="primary" type="submit">Submit site report to company review</button>
+          <button class="secondary" type="button" id="report-share-whatsapp">Share report summary to WhatsApp</button>
+        </form>
+        <div class="panel-head field-feed-head"><h3>Site feedback feed</h3><span id="report-count" class="status-pill">0 reports</span></div><div id="site-report-feed" class="field-list empty">No site reports submitted yet.</div>
+      </div>
+      <div class="field-grid">
+        <article class="panel"><div class="panel-head"><h3>Company-managed group chat</h3><span class="status-pill">Offline queue</span></div>
+          <label>Conversation<select id="team-chat-group"><option value="company-general">Company general</option><option value="site-supervisors">Site supervisors</option><option value="project-team">Current project team</option></select></label>
+          <div id="team-chat-messages" class="chat-messages"><p class="muted">No messages yet.</p></div>
+          <form id="team-chat-form" class="chat-compose"><label class="sr-only" for="team-chat-input">Message to team</label><input id="team-chat-input" required maxlength="2000" placeholder="Send a work update or instruction"><button class="primary" type="submit">Send</button></form>
+          <p class="studio-note">Messages are stored locally and queued for the configured company sync service. Real-time multi-device delivery requires a connected server / realtime service; it is not active until configured.</p>
+        </article>
+        <article class="panel"><div class="panel-head"><h3>WhatsApp work-record submission</h3><span class="status-pill">Staff-controlled import</span></div>
+          <p>Select a WhatsApp chat export yourself and submit relevant work information for management review. ConFlow will not silently read personal WhatsApp messages or scrape private chats.</p>
+          <form id="whatsapp-form" class="field-form">
+            <label>Project<select id="whatsapp-project" required><option value="">Select project</option></select></label>
+            <label>Submitted by<select id="whatsapp-staff" required><option value="">Select registered staff</option></select></label>
+            <label>WhatsApp exported chat (.txt)<input id="whatsapp-file" type="file" accept=".txt,text/plain" required></label>
+            <label class="check-line"><input id="whatsapp-consent" type="checkbox" required> I confirm I selected this work-related export, have permission to share it, and have removed unrelated personal or sensitive messages.</label>
+            <button class="primary" type="submit">Upload selected chat for company review</button>
+          </form>
+          <div id="whatsapp-review-list" class="field-list"></div>
+          <p class="studio-note">This imports a user-selected text export only. Direct WhatsApp Business API integration, message webhooks and company-managed number verification are a separate integration requiring Meta business credentials and staff consent.</p>
+        </article>
+      </div>
     </section>
     <section id="records-view" class="view hidden"><div class="panel"><h3>Local records</h3><p>Project records are stored in an encrypted-user-profile location managed by the desktop app. Database encryption and backup export are scheduled for the next implementation phase.</p></div></section>
     <section id="sync-view" class="view hidden"><div class="panel"><h3>Synchronisation centre</h3><p id="sync-description">Local-first mode is active. Changes remain on this device until a secure sync endpoint is configured.</p><div class="sync-metrics"><div><small>Queued operations</small><strong id="sync-queued">0</strong></div><div><small>Sync policy</small><strong>Retry + preserve local version</strong></div></div></div></section>
