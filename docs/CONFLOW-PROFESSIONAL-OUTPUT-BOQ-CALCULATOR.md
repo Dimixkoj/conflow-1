@@ -79,3 +79,20 @@ The new measurement rules are isolated in `renderer/quantity-takeoff.mjs` and ha
 The 450 × 225 mm block face, 5% block allowance, 50 mm screed, 150 mm topsoil, 300 mm working space around pad footings, 150 mm excavation depth allowance and 50 mm blinding are explicit starter assumptions. Edit or remove generated lines to suit the specification and actual site conditions. The system does not yet calculate reinforcement schedules, bar bending schedules, detailed excavation support, stepped/combined/strip/raft foundations, wall junction deductions, complex roof coverings, measured openings deductions for all finish layers, stair concrete, labour outputs or complete NRM/SMM/standard method measurement rules. No structural member sizing or reinforcement design is implied.
 
 All quantities remain subject to review by the quantity surveyor/engineer and applicable Nigerian project specifications and standards before tender, payment or construction.
+
+
+## Construction Measurement and Estimating Engine — milestone implementation
+
+The BOQ now has a trade-oriented structure with dedicated sections for preliminaries, substructure, superstructure, roofing, finishes, electrical installations, plumbing installations, mechanical installations, external works, furniture/equipment, provisional and prime cost sums, and unclassified/QS review items. Section totals feed a trade collection page and a grand summary. Manual lines can be allocated to a trade; CAD-generated lines are assigned by measurement code and model object type.
+
+A project can select an NRM2-oriented or POMI-oriented work-section profile. This is a configurable classification and document structure, not a claim of full compliance with either copyrighted measurement standard. A qualified QS must apply the adopted edition's detailed rules, preambles, item coverage, deductions, descriptions and units. The software does not reproduce licensed standard text.
+
+Each line supports a specification, working-drawing reference, source CAD object, measurement basis/dimension sheet, editable quantity, waste percentage, pricing type and QS verification state. CAD dimension sheets currently show the model object's length, width and height plus the generated formula/basis; they do not yet derive a complete drawing dimension paper, grid/level references or every opening/junction deduction. Manual items should carry a drawing reference and checked dimensions before tender issue.
+
+Measured rate build-up now separates labour, materials, plant, overhead and profit. Material waste is applied to the material component only and displayed separately from the measured quantity. PC and PS items have separate amount entry and a dedicated trade section rather than being disguised as measured quantities. An explicit legacy unit-rate override is retained for older BOQ records; it should be replaced by a documented build-up before tender.
+
+### Professional verification boundary
+
+Current model take-off remains a developing rules engine. It does not yet provide complete NRM2/POMI measurement clauses, a full dimension paper with squaring sheets, automatic drawing-sheet extraction, reinforcement tonnage/BBS, comprehensive services measurement, full excavation/earthworks, or every deduction and deemed-to-be-included rule. Market rates are not automatically verified against current Jos, Lagos or other Nigerian supplier/contractor quotations. No current market price is represented as authoritative. QS review, current quotations and project-specific specifications remain mandatory before issue for pricing.
+
+Tests: npm test now includes the original CAD take-off tests and the new trade classification, rate build-up, PC/PS and dimension-sheet tests.
