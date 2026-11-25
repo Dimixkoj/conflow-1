@@ -56,7 +56,7 @@ function renderBoq(){
  const makeCell=(tr,tag,txt)=>{const td=document.createElement(tag);if(txt!==undefined)td.textContent=txt;tr.append(td);return td};
  let serial=0;
  for(const section of sections){
-  const heading=document.createElement('tr');heading.className='trade-heading';const th=document.createElement('th');th.colSpan=9;th.textContent=section.code+' · '+section.name;heading.append(th);root.append(heading);
+  const heading=document.createElement('tr');heading.className='trade-heading';const th=document.createElement('th');th.colSpan=8;th.textContent=section.code+' · '+section.name;heading.append(th);root.append(heading);
   for(const item of section.items){
    const index=items.indexOf(item),tr=document.createElement('tr');serial++;
    makeCell(tr,'td',String(serial));
@@ -75,14 +75,14 @@ function renderBoq(){
    rate.append(details);
    const amount=makeCell(tr,'td');amount.className='amount-cell';amount.textContent=money(itemAmount(item));
    const action=makeCell(tr,'td');action.className='no-print';
-   const kind=document.createElement('select');kind.setAttribute('aria-label','Item pricing type');for(const [v,l] of [['measured','Measured'],['PC','Prime cost sum'],['PS','Provisional sum']]){const o=document.createElement('option');o.value=v;o.textContent=l;kind.append(o)}kind.value=item.itemType||'measured';kind.onchange=()=>{item.itemType=kind.value;renderBoq()};action.append(kind);
+   const trade=document.createElement('select');trade.setAttribute('aria-label','Trade section');for(const t of TRADES){const o=document.createElement('option');o.value=t.code;o.textContent=t.code+' · '+t.name;trade.append(o)}trade.value=item.tradeCode||tradeForItem(item);trade.onchange=()=>{item.tradeCode=trade.value;renderBoq()};action.append(trade);const kind=document.createElement('select');kind.setAttribute('aria-label','Item pricing type');for(const [v,l] of [['measured','Measured'],['PC','Prime cost sum'],['PS','Provisional sum']]){const o=document.createElement('option');o.value=v;o.textContent=l;kind.append(o)}kind.value=item.itemType||'measured';kind.onchange=()=>{item.itemType=kind.value;renderBoq()};action.append(kind);
    if(item.itemType==='PC'||item.itemType==='PS'){const pc=document.createElement('input');pc.type='number';pc.min='0';pc.placeholder='Sum amount';pc.value=Number(item.provisionalAmount||0);pc.setAttribute('aria-label','Provisional or prime cost sum');pc.onchange=()=>{item.provisionalAmount=Math.max(0,+pc.value||0);renderBoq()};action.append(pc)}
    const verify=document.createElement('select');verify.setAttribute('aria-label','QS verification status');for(const v of ['Pending QS verification','Checked against drawing','QS verified','Excluded / not measured']){const o=document.createElement('option');o.value=v;o.textContent=v;verify.append(o)}verify.value=item.verificationStatus||'Pending QS verification';verify.onchange=()=>{item.verificationStatus=verify.value;renderBoq()};action.append(verify);
    const del=document.createElement('button');del.className='row-delete';del.textContent='Remove';del.onclick=()=>{items.splice(index,1);renderBoq()};action.append(del);
    const dim=dimensionSheet(item,design.elements.find(e=>e.id===item.sourceId));const detailRow=document.createElement('tr');detailRow.className='dimension-row';const dc=document.createElement('td');dc.colSpan=9;dc.textContent='Dimension sheet: '+dim.drawingReference+' | '+dim.modelObject+' | L '+dim.dimensions.length.toFixed(3)+' m × W '+dim.dimensions.width.toFixed(3)+' m × H '+dim.dimensions.height.toFixed(3)+' m | '+dim.basis;detailRow.append(dc);
    root.append(tr,detailRow);
   }
-  const total=document.createElement('tr');total.className='trade-total';const tc=document.createElement('td');tc.colSpan=8;tc.textContent=section.name+' — section total';const tv=document.createElement('td');tv.textContent=money(section.total);total.append(tc,tv);root.append(total);
+  const total=document.createElement('tr');total.className='trade-total';const tc=document.createElement('td');tc.colSpan=7;tc.textContent=section.name+' — section total';const tv=document.createElement('td');tv.textContent=money(section.total);total.append(tc,tv);root.append(total);
  }
  const sub=items.reduce((s,x)=>s+itemAmount(x),0),cont=sub*Math.max(0,+$('boq-contingency')?.value||0)/100;
  $('boq-subtotal').textContent=money(sub);$('boq-contingency-value').textContent=money(cont);$('boq-total').textContent=money(sub+cont);$('boq-date').textContent=new Date().toLocaleDateString('en-GB');
