@@ -60,7 +60,7 @@ function createWindow() {
       sandbox: true
     }
   });
-  mainWindow.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
+  mainWindow.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
 }
 
 ipcMain.handle('app:info', () => ({ variant, version: app.getVersion(), online: net.isOnline() }));
