@@ -131,7 +131,7 @@
           <label>Challenges / safety observations<textarea id="report-issues" rows="2" placeholder="Delays, defects, safety observations or material shortages"></textarea></label>
           <label>Action required<textarea id="report-action" rows="2" placeholder="What support or decision is required from management?"></textarea></label>
           <label>Attach site photos / documents<input id="report-files" type="file" multiple accept="image/*,.pdf,.doc,.docx"></label>
-          <button class="primary" type="submit">Submit site report to company review</button>
+          <button class="primary" type="submit">Save & queue site report for company review</button>
           <button class="secondary" type="button" id="report-share-whatsapp">Share report summary to WhatsApp</button>
         </form>
         <div class="panel-head field-feed-head"><h3>Site feedback feed</h3><span id="report-count" class="status-pill">0 reports</span></div><div id="site-report-feed" class="field-list empty">No site reports submitted yet.</div>
@@ -150,7 +150,7 @@
             <label>Submitted by<select id="whatsapp-staff" required><option value="">Select registered staff</option></select></label>
             <label>WhatsApp exported chat (.txt)<input id="whatsapp-file" type="file" accept=".txt,text/plain" required></label>
             <label class="check-line"><input id="whatsapp-consent" type="checkbox" required> I confirm I selected this work-related export, have permission to share it, and have removed unrelated personal or sensitive messages.</label>
-            <button class="primary" type="submit">Upload selected chat for company review</button>
+            <button class="primary" type="submit">Submit selected chat export for company review</button>
           </form>
           <div id="whatsapp-review-list" class="field-list"></div>
           <p class="studio-note">This imports a user-selected text export only. Direct WhatsApp Business API integration, message webhooks and company-managed number verification are a separate integration requiring Meta business credentials and staff consent.</p>
