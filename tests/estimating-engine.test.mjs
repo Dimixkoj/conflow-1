@@ -13,7 +13,7 @@ test('CAD measurement codes map into trade sections',()=>{
 });
 test('rate build-up applies waste to materials only, then overhead and profit',()=>{
  const x=rateBuildUp({labourCost:100,materialCost:200,plantCost:50,waste:10,overheadPct:10,profitPct:5});
- assert.equal(x.wasteMaterial,20); assert.equal(x.overhead,37); assert.equal(x.profit,21.35); assert.equal(x.rate,428.35);
+ assert.equal(x.wasteMaterial,20); assert.equal(x.overhead,37); assert.equal(x.profit,20.35); assert.equal(x.rate,427.35);
 });
 test('PC and PS sums are separated from measured rates',()=>{
  assert.equal(itemAmount({itemType:'PC',provisionalAmount:50000,quantity:1}),50000);
