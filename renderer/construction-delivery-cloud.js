@@ -113,7 +113,6 @@ async function loadProjects() {
       select.add(new Option(project.name + (project.project_code ? ' · ' + project.project_code : ''), project.id));
     }
     if (projects.some((project) => project.id === previous)) select.value = previous;
-    else if (projects.length === 1) select.value = projects[0].id;
     if (select.value) await selectProject(select.value);
     else status(projects.length ? 'Choose a shared project' : 'No shared projects yet');
   } catch (error) {
