@@ -104,5 +104,85 @@ $('cloud-sync')?.addEventListener('click', async () => {
     $('cloud-sync').disabled = !activeWorkspace;
   }
 });
+
+window.conflowCloud = {
+  getContext: () => activeUser && activeWorkspace ? {
+    userId: activeUser.id, email: activeUser.email, companyId: activeWorkspace.id,
+    companyName: activeWorkspace.company_name, appKey
+  } : null,
+  listCpecProjects: async () => {
+    if (!activeUser || !activeWorkspace || appKey !== 'conflow1') throw new Error('Sign in to the ConFlow 1 company workspace first.');
+    const { data, error } = await supabase.from('projects')
+      .select('id,name,project_code,site_address,status,updated_at')
+      .eq('company_id', activeWorkspace.id).eq('app_key', 'conflow1')
+      .order('updated_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  },
+  createCpecProject: async (meta) => {
+    if (!activeUser || !activeWorkspace || appKey !== 'conflow1') throw new Error('Sign in to ConFlow 1 before creating a shared project.');
+    const { data, error } = await supabase.from('projects').insert({
+      company_id: activeWorkspace.id, app_key: 'conflow1',
+      name: String(meta?.title || 'Untitled construction project').trim(),
+      site_address: String(meta?.location || '').trim() || null,
+      timezone: 'Africa/Lagos', status: 'active', created_by: activeUser.id
+    }).select('id,name,project_code,site_address,status,updated_at').single();
+    if (error) throw error;
+    return data;
+  },
+  listCpecRecords: async (projectId) => {
+    if (!activeUser || !activeWorkspace) throw new Error('Sign in before loading shared project records.');
+    const { data, error } = await supabase.from('construction_project_records')
+      .select('id,project_id,record_type,record_id,payload,version,updated_at,deleted_at')
+      .eq('project_id', projectId).order('updated_at', { ascending: true });
+    if (error) throw error;
+    return data || [];
+  },
+  saveCpecRecord: async ({ projectId, recordType, recordId, payload, expectedVersion = null, deleted = false }) => {
+    if (!activeUser || !activeWorkspace) throw new Error('Sign in before syncing shared project records.');
+    const { data, error } = await supabase.rpc('cpec_save_record', {
+      p_project_id: projectId, p_record_type: recordType, p_record_id: recordId,
+      p_payload: payload, p_expected_version: expectedVersion, p_deleted: deleted
+    });
+    if (error) throw error;
+    return data;
+  },
+  listCpecTeam: async (projectId) => {
+    const { data, error } = await supabase.from('construction_project_team')
+      .select('id,user_id,role,status,created_at').eq('project_id', projectId).order('created_at');
+    if (error) throw error;
+    return data || [];
+  },
+  addCpecTeamMember: async ({ projectId, userId, role }) => {
+    if (!activeUser || !activeWorkspace) throw new Error('Sign in before managing project access.');
+    const { error } = await supabase.from('construction_project_team').insert({
+      company_id: activeWorkspace.id, app_key: 'conflow1', project_id: projectId,
+      user_id: userId, role, status: 'active', added_by: activeUser.id
+    });
+    if (error) throw error;
+  },
+  subscribeCpecProject: (projectId, onChange) => {
+    const channel = supabase.channel('cpec-project-' + projectId)
+      .on('postgres_changes', {
+        event: '*', schema: 'public', table: 'construction_project_records',
+        filter: 'project_id=eq.' + projectId
+      }, onChange).subscribe();
+    return () => { supabase.removeChannel(channel); };
+  },
+  uploadCpecAttachment: async ({ projectId, fileId, name, blob, contentType }) => {
+    const safeName = String(name || 'attachment').replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 120);
+    const path = projectId + '/' + fileId + '/' + safeName;
+    const { data, error } = await supabase.storage.from('cpec-project-files')
+      .upload(path, blob, { contentType: contentType || 'application/octet-stream', upsert: true });
+    if (error) throw error;
+    return data.path;
+  },
+  downloadCpecAttachment: async (path) => {
+    const { data, error } = await supabase.storage.from('cpec-project-files').download(path);
+    if (error) throw error;
+    return data;
+  }
+};
+
 supabase.auth.onAuthStateChange((_event, _session) => { queueMicrotask(() => refreshAuth()); });
 refreshAuth();
