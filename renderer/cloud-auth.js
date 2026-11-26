@@ -112,10 +112,26 @@ window.conflowCloud = {
   } : null,
   listCpecProjects: async () => {
     if (!activeUser || !activeWorkspace || appKey !== 'conflow1') throw new Error('Sign in to the ConFlow 1 company workspace first.');
-    const { data, error } = await supabase.from('projects')
+    const ownerAccess = String(activeWorkspace.owner_email || '').toLowerCase() === String(activeUser.email || '').toLowerCase();
+    const { data: memberships, error: membershipError } = await supabase.from('company_memberships')
+      .select('role').eq('company_id', activeWorkspace.id).eq('app_key', 'conflow1')
+      .eq('user_id', activeUser.id).eq('status', 'active');
+    if (membershipError) throw membershipError;
+    const companyAdmin = ownerAccess || (memberships || []).some((m) => ['company_owner','company_admin','hr_manager'].includes(m.role));
+    let allowedProjectIds = null;
+    if (!companyAdmin) {
+      const { data: assignments, error: assignmentError } = await supabase.from('construction_project_team')
+        .select('project_id').eq('user_id', activeUser.id).eq('status', 'active');
+      if (assignmentError) throw assignmentError;
+      allowedProjectIds = (assignments || []).map((a) => a.project_id);
+      if (!allowedProjectIds.length) return [];
+    }
+    let query = supabase.from('projects')
       .select('id,name,project_code,site_address,status,updated_at')
       .eq('company_id', activeWorkspace.id).eq('app_key', 'conflow1')
       .order('updated_at', { ascending: false });
+    if (allowedProjectIds) query = query.in('id', allowedProjectIds);
+    const { data, error } = await query;
     if (error) throw error;
     return data || [];
   },
@@ -128,7 +144,18 @@ window.conflowCloud = {
       timezone: 'Africa/Lagos', status: 'active', created_by: activeUser.id
     }).select('id,name,project_code,site_address,status,updated_at').single();
     if (error) throw error;
-    return data;
+    const ownerAccess = String(activeWorkspace.owner_email || '').toLowerCase() === String(activeUser.email || '').toLowerCase();
+    const { data: memberships } = await supabase.from('company_memberships')
+      .select('role').eq('company_id', activeWorkspace.id).eq('app_key', 'conflow1')
+      .eq('user_id', activeUser.id).eq('status', 'active');
+    const memberRole = (memberships || []).find((m) => ['project_manager','site_supervisor','company_owner','company_admin','hr_manager'].includes(m.role))?.role;
+    const creatorRole = ownerAccess || ['company_owner','company_admin','hr_manager'].includes(memberRole) ? 'project_manager' : memberRole;
+    const { error: teamError } = await supabase.from('construction_project_team').insert({
+      company_id: activeWorkspace.id, app_key: 'conflow1', project_id: data.id,
+      user_id: activeUser.id, role: creatorRole || 'project_manager',
+      status: 'active', added_by: activeUser.id
+    });
+    return { ...data, teamAssignmentWarning: teamError?.message || null };
   },
   listCpecRecords: async (projectId) => {
     if (!activeUser || !activeWorkspace) throw new Error('Sign in before loading shared project records.');
