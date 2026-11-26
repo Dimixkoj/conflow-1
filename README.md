@@ -48,3 +48,19 @@ SQLite is the source of truth while offline. Mutations are stored in `sync_queue
 ## Shared workforce backend
 
 Both app builds use the Dimixkoj Enterprise Supabase project with distinct `app_key` values (`conflow1` and `buildflow1`). The renderer uses only the public publishable key; authorization is enforced by Supabase Auth and RLS. Sign in with the registered company owner or an active app member, then use **Sync projects** to upload local project headers to the correct app workspace. This first client integration does not yet sync CAD models, BOQ lines, staff profiles, attendance, chat, attachments, or offline conflict resolution.
+
+## Permanent ConFlow module — Construction Project Execution & Control
+
+The ConFlow renderer now includes a permanent **Construction Project Execution & Control** workspace, accessible from the main navigation. It provides an end-to-end, editable sample programme and local registers for project particulars, architectural / structural / electrical / mechanical drawing issues, materials, labour, plant, work-package leadership, stage evidence, daily reports, rescheduling, workflow messages, internal and external inspections, client satisfaction and printable outputs.
+
+The four embedded SVGs are expressly illustrative coordination samples and must not be used for construction. Drawing records now capture discipline, drawing number, title, revision, issue status, prepared-by, checked-by, approved-by, approval date and approval reference. Approved-for-construction status is a record entered by the user's authorised project team; the software does not independently validate professional credentials or approve designs.
+
+### Professional and safety controls
+
+- The appointed architect and appropriately registered structural, electrical and mechanical professionals remain responsible for discipline-specific design, calculations, coordination, revision issue and approvals.
+- Statutory permits, authority inspections, material tests, concealed-work hold points, HSE controls and client / consultant acceptance must be recorded against the actual project requirements and applicable Nigerian and local law.
+- A typed name in an acknowledgement field is not a cryptographic signature or a substitute for a legally accepted signature workflow.
+- Chat is a coordination record, not a substitute for controlled drawings, RFIs, site instructions, contract notices or signed inspection forms.
+- The module's records and attachments are currently stored locally in the embedded workspace. Shared cloud sync, role-based approvals, immutable audit trails, and conflict resolution are not yet connected to the workforce backend.
+
+See [the module implementation notes](docs/CONSTRUCTION-DELIVERY-CENTRE.md).
