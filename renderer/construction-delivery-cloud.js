@@ -156,7 +156,8 @@ async function createProject() {
     select.add(new Option(project.name, project.id));
     select.value = project.id;
     await selectProject(project.id);
-    status('Shared project created · ' + project.name, true);
+    if (project.teamAssignmentWarning) status('Project created, but creator team assignment needs admin attention: ' + project.teamAssignmentWarning);
+    else status('Shared project created · ' + project.name, true);
   } catch (error) {
     status('Project creation failed: ' + error.message);
   }
