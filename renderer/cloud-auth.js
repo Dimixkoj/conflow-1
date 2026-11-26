@@ -182,6 +182,11 @@ window.conflowCloud = {
   },
   addCpecTeamMember: async ({ projectId, userId, role }) => {
     if (!activeUser || !activeWorkspace) throw new Error('Sign in before managing project access.');
+    const { data: member, error: memberError } = await supabase.from('company_memberships')
+      .select('id').eq('company_id', activeWorkspace.id).eq('app_key', 'conflow1')
+      .eq('user_id', userId).eq('status', 'active').maybeSingle();
+    if (memberError) throw memberError;
+    if (!member) throw new Error('This user must first be added as an active ConFlow 1 company member.');
     const { error } = await supabase.from('construction_project_team').insert({
       company_id: activeWorkspace.id, app_key: 'conflow1', project_id: projectId,
       user_id: userId, role, status: 'active', added_by: activeUser.id
