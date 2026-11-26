@@ -121,9 +121,7 @@ async function loadProjects() {
   }
 }
 async function selectProject(projectId) {
-  const data = window.CPEC.getData();
-  data.meta.cloudProjectId = projectId || null;
-  window.CPEC.save();
+  if (projectId) await window.CPEC.switchWorkspace(projectId);
   activeProjectId = projectId || null;
   if (stopRealtime) { stopRealtime(); stopRealtime = null; }
   if (!activeProjectId) {
