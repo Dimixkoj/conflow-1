@@ -61,6 +61,10 @@ The four embedded SVGs are expressly illustrative coordination samples and must 
 - Statutory permits, authority inspections, material tests, concealed-work hold points, HSE controls and client / consultant acceptance must be recorded against the actual project requirements and applicable Nigerian and local law.
 - A typed name in an acknowledgement field is not a cryptographic signature or a substitute for a legally accepted signature workflow.
 - Chat is a coordination record, not a substitute for controlled drawings, RFIs, site instructions, contract notices or signed inspection forms.
-- The module's records and attachments are currently stored locally in the embedded workspace. Shared cloud sync, role-based approvals, immutable audit trails, and conflict resolution are not yet connected to the workforce backend.
+- CPEC now connects to the existing Dimixkoj Workforce Supabase backend for project-scoped shared records, assigned project teams, a private file bucket, server-generated change audit events, Realtime change notifications and expected-version conflict detection.
+- The local workspace remains available offline. Cloud synchronisation is user-triggered; simultaneous edits are reported as conflicts and retained locally rather than silently overwritten.
+- Project team assignments support project managers, architects, structural / electrical / mechanical engineers, site supervisors, inspectors and client representatives. The current assignment screen requires an existing active ConFlow 1 company member's Auth user UUID; email invitations are a later milestone.
+- CPEC cloud records cover project metadata, schedule tasks, drawings, stage records, daily reports, quality / inspection records, client satisfaction and workflow chat. Attachments upload to a private project bucket when the device is online (12 MB per file in this module).
+- Existing local CPEC records are not automatically migrated; select or create the matching shared project and synchronise from the device holding the local records.
 
 See [the module implementation notes](docs/CONSTRUCTION-DELIVERY-CENTRE.md).
