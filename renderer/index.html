@@ -17,7 +17,7 @@
       <button class="nav" data-view="cad">Technical CAD</button><button class="nav" data-view="presentation">Presentation Studio</button>
       <button class="nav" data-view="boq">BOQ & Costing</button>
       <button class="nav" data-view="calculator">Calculators</button>
-      <button class="nav" data-view="field">People & Site</button><a class="nav" href="./construction-delivery.html">Construction Schedule</a><button class="nav" data-view="records">Local records</button>
+      <button class="nav" data-view="field">People & Site</button><button class="nav" data-view="execution">Construction Project Execution &amp; Control</button><button class="nav" data-view="records">Local records</button>
       <button class="nav" data-view="sync">Sync centre</button>
       <button class="nav" data-view="settings">Settings</button>
     </nav>
@@ -158,6 +158,14 @@
           <p class="studio-note">This imports a user-selected text export only. Direct WhatsApp Business API integration, message webhooks and company-managed number verification are a separate integration requiring Meta business credentials and staff consent.</p>
         </article>
       </div>
+    </section>
+    <section id="execution-view" class="view hidden">
+      <div class="panel execution-intro">
+        <div class="panel-head"><div><p class="eyebrow">CONFLOW / PROJECT DELIVERY LIFECYCLE</p><h3>Construction Project Execution &amp; Control</h3></div><span class="status-pill">Permanent project module</span></div>
+        <p>Manage the construction programme, drawing register, daily records, labour, materials, work-package leads, inspections, rescheduling, client feedback and handover evidence from one workspace.</p>
+        <p class="studio-note">The embedded module stores its working records locally on this device. The current release does not yet synchronise its records, chat or attachments to the company cloud database. Do not treat a local entry as a centrally received instruction or approval.</p>
+      </div>
+      <iframe id="execution-workspace" title="Construction Project Execution and Control" src="./construction-delivery.html" loading="lazy"></iframe>
     </section>
     <section id="records-view" class="view hidden"><div class="panel"><h3>Local records</h3><p>Project records are stored in an encrypted-user-profile location managed by the desktop app. Database encryption and backup export are scheduled for the next implementation phase.</p></div></section>
     <section id="sync-view" class="view hidden"><div class="panel"><h3>Synchronisation centre</h3><p id="sync-description">Local-first mode is active. Changes remain on this device until a secure sync endpoint is configured.</p><div class="sync-metrics"><div><small>Queued operations</small><strong id="sync-queued">0</strong></div><div><small>Sync policy</small><strong>Retry + preserve local version</strong></div></div></div></section>
