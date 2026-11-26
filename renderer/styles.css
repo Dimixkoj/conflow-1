@@ -119,3 +119,6 @@
 @media(max-width:900px){.field-grid{grid-template-columns:1fr}.field-form-wide{grid-template-columns:1fr}}
 
 .header-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.header-tools .status-pill{font-size:11px}
+
+/* Permanent Construction Project Execution & Control module */
+#execution-view{min-width:0}.execution-intro{margin-bottom:14px}#execution-workspace{display:block;width:100%;height:calc(100vh - 285px);min-height:760px;border:1px solid #2b4059;border-radius:14px;background:#0a1220}@media(max-width:760px){#execution-workspace{height:calc(100vh - 240px);min-height:780px}}
