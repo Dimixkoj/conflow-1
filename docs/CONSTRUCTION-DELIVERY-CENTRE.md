@@ -20,8 +20,26 @@ The offline-first construction execution and architectural scheduling workspace 
 - JSON data export and full local backup / restore including IndexedDB attachments.
 - Service-worker shell cache includes the new page.
 
-## Data and sync status
-This module saves records locally using localStorage and IndexedDB and is designed to remain usable offline after the page has been cached. The module's chat and records are currently device-local and are **not yet synchronised** with the shared Supabase workforce backend. Team-wide chat, role-based access, server-side audit trails, conflict resolution and shared attachment storage require a subsequent backend integration milestone.
+## Shared cloud data and offline sync
+The module continues to save records locally using localStorage and IndexedDB. After the user signs in through the ConFlow company account, they can load or create a shared ConFlow project and manually synchronise CPEC records with the existing Supabase workforce backend.
+
+The additive backend migration creates:
+- `construction_project_team` for project-specific assignments: project manager, architect, structural engineer, electrical engineer, mechanical engineer, site supervisor, inspector and client representative.
+- `construction_project_records` for versioned project metadata, schedule tasks, drawings, stage records, daily reports, quality / inspection records, satisfaction records and workflow chat.
+- `construction_project_audit` for server-generated insert / update audit events visible to project managers and company administrators.
+- A private `cpec-project-files` Storage bucket, with project-folder access policies.
+- The `cpec_save_record` RPC, which uses expected-version checks and returns a conflict rather than silently overwriting a record changed by another user.
+- A Realtime subscription to shared project record changes. The module notifies the user when remote changes arrive; the user starts Sync to reconcile them.
+
+Row Level Security restricts records and files to active ConFlow company members who are either company administrators or assigned to that specific project. Role permissions are record-type aware: inspectors can update inspection / daily / satisfaction records, client representatives can update satisfaction and chat, and the discipline leads have the relevant design / programme / site record access. BuildFlow records remain outside this CPEC table scope.
+
+### Current integration boundaries
+- Synchronisation is user-triggered, not continuous background sync. Offline changes remain local until the user reconnects and presses **Sync shared project**.
+- If the same record has changed both locally and remotely since the last sync, CPEC retains the local copy and reports a conflict; it does not silently choose a winner. A dedicated side-by-side conflict resolution screen is a later milestone.
+- Team assignment currently uses the existing ConFlow Auth user UUID. The person must already be an active ConFlow 1 company member. Email invitations and identity lookup are not yet implemented in this screen.
+- Attachments are uploaded to the private bucket when they are locally available and the project is synchronised. The current file limit is 12 MB per attachment. A cloud-only attachment can be downloaded for preview when needed.
+- A shared cloud record or file is not automatically a professional approval, signed instruction or statutory acceptance. The project team must still use the controlled approval and document issue process.
+- The legacy local-only project data is not automatically migrated to a shared project. Select or create the corresponding cloud project, then synchronise from the device that holds the local records. Review any conflict notice before relying on the cloud copy.
 
 ## Drawing and professional-use limitation
 The included SVGs are illustrative coordination diagrams only. They are not a complete construction drawing package, signed design, engineering calculation, fabrication detail, permit submission or instruction to build. The appointed architect and appropriately registered structural, electrical and mechanical professionals must prepare, coordinate, check, approve and issue project-specific drawings, specifications, calculations and revisions. Statutory / external inspections and professional sign-offs must be completed by the competent persons and authorities applicable to the project. Typed signature fields are acknowledgements, not cryptographic electronic signatures.
