@@ -7,6 +7,7 @@ The offline-first construction execution and architectural scheduling workspace 
 - Project title, client, location, start date and consultant / contractor leads.
 - Sample 35-work-package low-rise construction programme from preliminaries to handover.
 - Editable activity dates, durations, dependencies, responsible leads, progress and status.
+- Rescheduling audit trail capturing previous / revised date, activity, person entering the change, reason and timestamp.
 - Architectural, structural, electrical and mechanical sample schematic diagrams.
 - Drawing register with discipline, drawing number, title, revision, issue status, prepared-by, checked-by, approved-by, approval date and approval reference.
 - Upload of drawings, photos and evidence. Image attachments are stored in browser IndexedDB; drawing files such as CAD binaries are recorded by filename and should remain in the project file store.
