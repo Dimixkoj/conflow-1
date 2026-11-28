@@ -9,7 +9,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'renderer/index.html',
-        constructionDelivery: 'renderer/construction-delivery.html'
+        constructionDelivery: 'renderer/construction-delivery.html',
+        login: 'renderer/login.html',
+        createAccount: 'renderer/create-account.html',
+        confirmEmail: 'renderer/confirm-email.html'
       }
     }
   },
